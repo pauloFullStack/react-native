@@ -1,9 +1,8 @@
-import { FlatList, Text } from "react-native";
-import { Expense } from "./interfarces/Expense";
+import { FlatList } from "react-native";
+import { Expense } from "../../util/interfaces/Expense";
+import ExpenseItem from "./ExpenseItem";
 
-const renderExpenseItem = (itemData: { item: Expense }) => {
-    return <Text>{itemData.item.description}</Text>
-}
+const renderExpenseItem = (itemData: { item: Expense }) => <ExpenseItem {...itemData.item} />
 
 const ExpensesList = ({ expenses }: { expenses: Expense[] }) => {
     return <FlatList
