@@ -4,3 +4,7 @@ export const GetFormattedDate = (date: Date, objectDate: DateAttr = { day: "2-di
     return new Intl.DateTimeFormat("pt-BR", { ...objectDate }).format(date);
 
 }
+
+export const getDateMinusDays = (date: Date, days: number) => {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate() - days);
+}

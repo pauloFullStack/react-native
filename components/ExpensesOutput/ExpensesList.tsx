@@ -8,7 +8,7 @@ const ExpensesList = ({ expenses }: { expenses: Expense[] }) => {
     return <FlatList
         data={expenses}
         renderItem={renderExpenseItem}
-        keyExtractor={(item) => item.id} />
+        keyExtractor={(item) => item.id ?? new Date().toString() + Math.random().toString()} />
 }
 
 export default ExpensesList;

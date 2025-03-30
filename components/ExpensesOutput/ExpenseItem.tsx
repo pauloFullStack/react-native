@@ -13,7 +13,7 @@ import { NavigationProps } from "../../util/interfaces/Expense";
 
 // type NavigationProps = NativeStackNavigationProp<RootStackParamList, "ManageExpense">;
 
-const ExpenseItem = ({ id, description, amount, date }: { id: string, description: string, amount: number, date: Date }) => {
+const ExpenseItem = ({ id, description, amount, date }: { id?: string, description: string, amount: number, date: Date }) => {
 
     const navigation = useNavigation<NavigationProps>();
 

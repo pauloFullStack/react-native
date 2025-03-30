@@ -21,3 +21,21 @@ export type ManageExpenseRouteProp = RouteProp<RootStackParamList, "ManageExpens
 export interface ManageExpenseProps {
     route: ManageExpenseRouteProp;
 }
+
+
+// Tipo para o estado
+export type ExpensesState = Expense[];
+
+// Tipo para ações do reducer
+export type ExpenseAction =
+    | { type: "ADD"; payload: Expense }
+    | { type: "UPDATE"; payload: { id: string; data: Expense } }
+    | { type: "DELETE"; payload: string };
+
+// Tipo para o contexto
+export interface ExpensesContextType {
+    expenses: ExpensesState;
+    addExpense: (expenseData: Expense) => void;
+    deleteExpense: (id: string) => void;
+    updateExpense: (id: string, expenseData: Expense) => void;
+}

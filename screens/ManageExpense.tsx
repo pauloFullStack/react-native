@@ -2,27 +2,55 @@ import React, { useLayoutEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { ManageExpenseProps, ManageExpenseRouteProp, NavigationProps } from "../util/interfaces/Expense";
 import { useNavigation } from "@react-navigation/native";
-import IconButton from "../components/UI/IconButton";
 import { GlobalStyles } from "../constants/styles";
+import { useContextExpense } from "../store/use-context";
+
+import IconButton from "../components/UI/IconButton";
 import Button from "../components/UI/Button";
 
 const ManageExpense: React.FC<ManageExpenseProps> = ({ route }: { route: ManageExpenseRouteProp }) => {
 
     const navigation = useNavigation<NavigationProps>();
+    const expenseId = route.params?.expenseId;
+    const isEditing = !!expenseId;
+
+    const { deleteExpense, updateExpense, addExpense } = useContextExpense();
 
     useLayoutEffect(() => {
         navigation.setOptions({
-            title: !!route.params?.expenseId ? 'Editar despesa' : 'Adicionar despesa'
+            title: isEditing ? 'Editar despesa' : 'Adicionar despesa'
         })
-    }, [navigation, route.params?.expenseId])
+    }, [navigation, isEditing])
 
-    const deleteExpenseHandler = () => { }
+    const confirmHandler = () => {
 
-    const cancelHandler = () => { 
+        if (isEditing) {
+            updateExpense(expenseId,
+                {
+                    description: 'Test Update',
+                    amount: 19.99,
+                    date: new Date('2025-03-25')
+                });
+        } else {
+            addExpense(
+                {
+                    description: 'Test Add',
+                    amount: 19.99,
+                    date: new Date('2025-03-25')
+                });
+        }
         navigation.goBack();
     }
 
-    const confirmHandler = () => { }
+    const deleteExpenseHandler = () => {
+        deleteExpense(expenseId ?? '');
+        navigation.goBack();
+    }
+
+    const cancelHandler = () => {
+        navigation.goBack();
+    }
+
 
     return (
         <View style={styles.container}>
@@ -63,7 +91,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    buttonCancel:{
+    buttonCancel: {
         marginRight: 28
     }
 })
