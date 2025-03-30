@@ -7,6 +7,7 @@ import { useContextExpense } from "../store/use-context";
 
 import IconButton from "../components/UI/IconButton";
 import Button from "../components/UI/Button";
+import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 
 const ManageExpense: React.FC<ManageExpenseProps> = ({ route }: { route: ManageExpenseRouteProp }) => {
 
@@ -54,6 +55,7 @@ const ManageExpense: React.FC<ManageExpenseProps> = ({ route }: { route: ManageE
 
     return (
         <View style={styles.container}>
+            <ExpenseForm />
             <View style={styles.viewButton}>
                 <Button mode='flat' style={styles.buttonCancel} onPress={cancelHandler}>Cancelar</Button>
                 <Button onPress={confirmHandler}>{!!route.params?.expenseId ? 'Atualizar' : 'Adicionar'}</Button>
