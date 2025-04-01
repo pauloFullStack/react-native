@@ -55,11 +55,7 @@ const ManageExpense: React.FC<ManageExpenseProps> = ({ route }: { route: ManageE
 
     return (
         <View style={styles.container}>
-            <ExpenseForm />
-            <View style={styles.viewButton}>
-                <Button mode='flat' style={styles.buttonCancel} onPress={cancelHandler}>Cancelar</Button>
-                <Button onPress={confirmHandler}>{!!route.params?.expenseId ? 'Atualizar' : 'Adicionar'}</Button>
-            </View>
+            <ExpenseForm onCancel={cancelHandler} isEditing={isEditing} />
             {!!route.params?.expenseId && (
                 <View style={styles.deleteContainer}>
                     <IconButton
@@ -88,12 +84,6 @@ const styles = StyleSheet.create({
         borderTopColor: GlobalStyles.colors.primary200,
         alignItems: 'center'
     },
-    viewButton: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    buttonCancel: {
-        marginRight: 28
-    }
+    
+    
 })

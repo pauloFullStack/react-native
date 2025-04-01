@@ -5,11 +5,12 @@ interface Input {
     label: string,
     keyboardType?: KeyboardTypeOptions,
     maxLength?: number,
-    onChangeText?: () => void,
+    onChangeText?: (value1?: any, value2?: any) => void,
     placeholder?: string,
     multiline?: boolean,
     autoCorrect?: boolean,
-    style?: StyleProp<TextStyle | ViewStyle>
+    style?: StyleProp<TextStyle | ViewStyle>,
+    value?: any
 }
 
 const Input = ({
@@ -20,7 +21,8 @@ const Input = ({
     placeholder = '',
     multiline = false,
     autoCorrect = false,
-    style = {}
+    style = {},
+    value = ''
 }: Input) => {
 
     const inputStyles: {}[] = [styles.input];
@@ -38,7 +40,8 @@ const Input = ({
                 onChangeText={onChangeText}
                 placeholder={placeholder}
                 multiline={multiline}
-                autoCorrect={autoCorrect} />
+                autoCorrect={autoCorrect}
+                value={value} />
 
         </View>
     );
