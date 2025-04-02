@@ -10,7 +10,7 @@ export interface Expense {
 
 
 export type RootStackParamList = {
-    ManageExpense: { expenseId?: string }; // Definindo que 'ManageExpense' precisa de um 'expenseId'
+    ManageExpense: { expenseId?: string, description: string, amount: number, date?: string }; // Definindo que 'ManageExpense' precisa de um 'expenseId'
     ExpensesOverview: undefined;
 };
 

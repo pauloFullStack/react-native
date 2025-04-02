@@ -23,22 +23,12 @@ const ManageExpense: React.FC<ManageExpenseProps> = ({ route }: { route: ManageE
         })
     }, [navigation, isEditing])
 
-    const confirmHandler = () => {
+    const confirmHandler = (expenseData: any) => {
 
         if (isEditing) {
-            updateExpense(expenseId,
-                {
-                    description: 'Test Update',
-                    amount: 19.99,
-                    date: new Date('2025-03-25')
-                });
+            updateExpense(expenseId, expenseData);
         } else {
-            addExpense(
-                {
-                    description: 'Test Add',
-                    amount: 19.99,
-                    date: new Date('2025-03-25')
-                });
+            addExpense(expenseData);
         }
         navigation.goBack();
     }
@@ -55,7 +45,17 @@ const ManageExpense: React.FC<ManageExpenseProps> = ({ route }: { route: ManageE
 
     return (
         <View style={styles.container}>
-            <ExpenseForm onCancel={cancelHandler} isEditing={isEditing} />
+            <ExpenseForm
+                onCancel={cancelHandler}
+                onSubmit={confirmHandler}
+                isEditing={isEditing}
+                dataExpense={JSON.stringify({
+                    amount: route.params?.amount,
+                    date: route.params.date?.toString(),
+                    description: route.params.description
+                })}
+                 />
+
             {!!route.params?.expenseId && (
                 <View style={styles.deleteContainer}>
                     <IconButton
@@ -84,6 +84,6 @@ const styles = StyleSheet.create({
         borderTopColor: GlobalStyles.colors.primary200,
         alignItems: 'center'
     },
-    
-    
+
+
 })

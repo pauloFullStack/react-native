@@ -19,7 +19,8 @@ const ExpenseItem = ({ id, description, amount, date }: { id?: string, descripti
 
     const ExpensePressHandler = () => {
 
-        navigation.navigate('ManageExpense', { expenseId: id });
+        // continuar curso
+        navigation.navigate('ManageExpense', { expenseId: id, description, amount, date: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}` });
     }
 
     return (

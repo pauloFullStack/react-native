@@ -1,19 +1,20 @@
 import { StyleSheet, Text, View } from "react-native"
 import Input from "../UI/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Expense } from "../../util/interfaces/Expense";
 import Button from "../UI/Button";
 
-const ExpenseForm = ({ onCancel, onSubmit, isEditing }: { onCancel: () => void, onSubmit?: () => void, isEditing: boolean }) => {
+const ExpenseForm = ({ onCancel, onSubmit, isEditing, dataExpense }: { onCancel: () => void, onSubmit: (value: any) => void, isEditing: boolean, dataExpense?: string }) => {
 
-    const [inputValues, setInputValues] = useState<Expense>({
-        amount: 0,
-        date: new Date(),
-        description: ''
+    const [inputValues, setInputValues] = useState<{ amount: number, date: string, description: string }>({
+        amount: JSON.parse(dataExpense ?? '[]').amount.toString() ?? 0,
+        date: JSON.parse(dataExpense ?? '[]').date ?? new Date().toISOString().split('T')[0],
+        description: JSON.parse(dataExpense ?? '[]').description ?? ''
     });
 
+
     const inputChangedHandler = (inputIdentifier: string, enteredValue: string) => {
-        setInputValues((curInputValues: Expense) => {
+        setInputValues((curInputValues: { amount: number, date: string, description: string }) => {
             return {
                 ...curInputValues,
                 [inputIdentifier]: enteredValue
@@ -22,7 +23,13 @@ const ExpenseForm = ({ onCancel, onSubmit, isEditing }: { onCancel: () => void, 
     };
 
     const submitHandler = () => {
+        const expenseData = {
+            amount: +inputValues.amount,
+            date: new Date(inputValues.date),
+            description: inputValues.description
+        };
 
+        onSubmit(expenseData);
     }
 
     return (
