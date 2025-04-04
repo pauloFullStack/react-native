@@ -3,7 +3,7 @@ import { Expense, ExpensesState, ExpenseAction, ExpensesContextType } from "../u
 
 
 // Definição do estado inicial (lista vazia)
-const initialExpensesState: Expense[] = [
+const initialExpensesState: Expense[] = [   
     {
         id: 'e1',
         description: 'Um par de sapatos',
@@ -76,6 +76,10 @@ const expensesReducer = (state: Expense[], action: any) => {
             const id = new Date().toString() + Math.random().toString();
             return [{ ...action.payload, id }, ...state];
         case "UPDATE":
+
+            const t = state.map((expense: any) =>
+                expense.id === action.payload.id ? { ...expense, ...action.payload.data } : expense
+            )
 
             return state.map((expense: any) =>
                 expense.id === action.payload.id ? { ...expense, ...action.payload.data } : expense

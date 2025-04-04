@@ -24,7 +24,7 @@ const ExpensesOverview = () => {
             size={24}
             color={tintColor}
             onPress={() => {
-                navigation.navigate('ManageExpense')
+                navigation.navigate('ManageExpense', {id: '', description: '', amount: 0})
             }} />
     })}>
         <BottomTabs.Screen name='RecentExpenses' component={RecentExpenses} options={{

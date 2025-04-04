@@ -13,14 +13,17 @@ import { NavigationProps } from "../../util/interfaces/Expense";
 
 // type NavigationProps = NativeStackNavigationProp<RootStackParamList, "ManageExpense">;
 
-const ExpenseItem = ({ id, description, amount, date }: { id?: string, description: string, amount: number, date: Date }) => {
+const ExpenseItem = ({ id, description, amount, date }: { id?: string, description?: string, amount?: number, date?: Date }) => {
 
     const navigation = useNavigation<NavigationProps>();
 
     const ExpensePressHandler = () => {
-
-        // continuar curso
-        navigation.navigate('ManageExpense', { expenseId: id, description, amount, date: `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}` });
+    
+        navigation.navigate('ManageExpense', { 
+            expenseId: id, 
+            description: description ?? '', 
+            amount: amount ?? 0, 
+            date: date ? GetFormattedDate(date) : `${new Date().toLocaleString('pt-BR', {year: 'numeric', month: '2-digit', day: '2-digit'})}T00:00:00`});
     }
 
     return (
@@ -28,10 +31,10 @@ const ExpenseItem = ({ id, description, amount, date }: { id?: string, descripti
             <View style={styles.expenseItem}>
                 <View>
                     <Text style={[styles.textBase, styles.description]}>{description}</Text>
-                    <Text style={styles.textBase}>{GetFormattedDate(date)}</Text>
+                    <Text style={styles.textBase}>{GetFormattedDate(date ?? new Date())}</Text>
                 </View>
                 <View style={styles.amountContainer}>
-                    <Text style={styles.amount}>{amount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Text>
+                    <Text style={styles.amount}>{ amount ? amount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : ''}</Text>
                 </View>
             </View>
         </Pressable>

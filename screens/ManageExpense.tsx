@@ -6,11 +6,10 @@ import { GlobalStyles } from "../constants/styles";
 import { useContextExpense } from "../store/use-context";
 
 import IconButton from "../components/UI/IconButton";
-import Button from "../components/UI/Button";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 
 const ManageExpense: React.FC<ManageExpenseProps> = ({ route }: { route: ManageExpenseRouteProp }) => {
-
+    
     const navigation = useNavigation<NavigationProps>();
     const expenseId = route.params?.expenseId;
     const isEditing = !!expenseId;
@@ -51,7 +50,7 @@ const ManageExpense: React.FC<ManageExpenseProps> = ({ route }: { route: ManageE
                 isEditing={isEditing}
                 dataExpense={JSON.stringify({
                     amount: route.params?.amount,
-                    date: route.params.date?.toString(),
+                    date: route.params.date ? route.params.date : `${new Date().toLocaleString('pt-BR', {year: 'numeric', month: '2-digit', day: '2-digit'})}T00:00:00`,
                     description: route.params.description
                 })}
                  />
