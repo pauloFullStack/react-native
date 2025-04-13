@@ -10,7 +10,9 @@ interface Input {
     multiline?: boolean,
     autoCorrect?: boolean,
     style?: StyleProp<TextStyle | ViewStyle>,
-    value?: any
+    value?: string,
+    isShowMessageError?: boolean,
+    messageError?: string
 }
 
 const Input = ({
@@ -22,18 +24,24 @@ const Input = ({
     multiline = false,
     autoCorrect = false,
     style = {},
-    value = ''
+    value = '',
+    isShowMessageError = false,
+    messageError = ''
 }: Input) => {
 
     const inputStyles: {}[] = [styles.input];
 
     setStyle(inputStyles, multiline);
 
+    if (isShowMessageError)
+        inputStyles.push(styles.invalidInput);
+
+
     return (
         <View style={[styles.inputContainer, style]}>
-            
-            <Text style={styles.label}>{label}</Text>
-            
+
+            <Text style={[styles.label]}>{label}</Text>
+
             <TextInput style={inputStyles}
                 keyboardType={keyboardType}
                 maxLength={maxLength}
@@ -41,7 +49,10 @@ const Input = ({
                 placeholder={placeholder}
                 multiline={multiline}
                 autoCorrect={autoCorrect}
-                value={value} />
+                value={value ?? ''} />
+            {isShowMessageError ?
+                (<Text style={{ color: GlobalStyles.colors.error500, marginTop: 5 }}>{messageError}</Text>) :
+                ''}
 
         </View>
     );
@@ -59,6 +70,7 @@ const styles = StyleSheet.create({
     inputContainer: {
         marginHorizontal: 4,
         marginBottom: 25,
+        width: '100%'
         // marginVertical: 8
     },
     label: {
@@ -67,6 +79,8 @@ const styles = StyleSheet.create({
         marginBottom: 4
     },
     input: {
+        borderWidth: 1,
+        borderColor: '#ccc',
         backgroundColor: GlobalStyles.colors.primary100,
         color: GlobalStyles.colors.primary700,
         padding: 6,
@@ -76,5 +90,10 @@ const styles = StyleSheet.create({
     inputMultiline: {
         minHeight: 100,
         textAlignVertical: 'top'
+    },
+    invalidInput: {
+        borderWidth: 1,
+        width: '100%',
+        borderColor: GlobalStyles.colors.error500
     }
 })
