@@ -9,10 +9,13 @@ import IconButton from "../components/UI/IconButton";
 import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 import { deleteExpenseBd, storeExpense, updateExpenseBd } from "../util/http";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
+import ErrorOverlay from "../components/UI/ErrorOverlay";
 
 const ManageExpense: React.FC<ManageExpenseProps> = ({ route }: { route: ManageExpenseRouteProp }) => {
 
     const [isSubmitting, setiIsSubmitting] = useState(false);
+    const [error, setError] = useState<string | null>();
+
     const navigation = useNavigation<NavigationProps>();
     const expenseId = route.params?.expenseId;
     const isEditing = !!expenseId;
@@ -28,32 +31,52 @@ const ManageExpense: React.FC<ManageExpenseProps> = ({ route }: { route: ManageE
     const confirmHandler = async (expenseData: any) => {
 
         setiIsSubmitting(true);
-        
-        if (isEditing) {
-            updateExpense(expenseId, expenseData);
-            await updateExpenseBd(expenseId, expenseData);
-        } else {
-            const id = await storeExpense(expenseData);
 
-            if (id !== '') {
-                addExpense({ ...expenseData, id });
+        try {
+
+            if (isEditing) {
+                updateExpense(expenseId, expenseData);
+                await updateExpenseBd(expenseId, expenseData);
+            } else {
+                const id = await storeExpense(expenseData);
+
+                if (id !== '') {
+                    addExpense({ ...expenseData, id });
+                }
             }
+
+            navigation.goBack();
+        } catch (error) {
+            setError('Não foi possível salvar os dados - tente novamente mais tarde!');
+            setiIsSubmitting(false);
         }
-        navigation.goBack();
+
     }
 
     const deleteExpenseHandler = async () => {
 
         setiIsSubmitting(true);
-        await deleteExpenseBd(expenseId ?? '');
-        deleteExpense(expenseId ?? '');
-        // setiIsSubmitting(false);
 
-        navigation.goBack();
+        try {
+
+            await deleteExpenseBd(expenseId ?? '');
+            deleteExpense(expenseId ?? '');
+            navigation.goBack();
+
+        } catch (error) {
+
+            setError('Não foi possível excluir a despesa - tente novamente mais tarde');
+            setiIsSubmitting(false);
+        }
+
     }
 
     const cancelHandler = () => {
         navigation.goBack();
+    }
+
+    if (error && !isSubmitting) {
+        return <ErrorOverlay message={error} onConfirm={() => { setError(null) }} />
     }
 
     if (isSubmitting) {

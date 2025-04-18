@@ -1,5 +1,5 @@
 import { createContext, useReducer } from "react";
-import { Expense, ExpensesState, ExpenseAction, ExpensesContextType } from "../util/interfaces/Expense";
+import { Expense, ExpenseAction, ExpensesContextType } from "../util/interfaces/Expense";
 
 
 // Definição do estado inicial (lista vazia)

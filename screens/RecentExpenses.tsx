@@ -5,10 +5,13 @@ import { useContextExpense } from "../store/use-context";
 import { useEffect, useState } from "react";
 import { getExpenses } from "../util/http";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
+import ErrorOverlay from "../components/UI/ErrorOverlay";
 
 const RecentExpenses = () => {
 
     const [isFetching, setIsFetching] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
     const { expenses, setExpenses } = useContextExpense();
 
     useEffect(() => {
@@ -16,18 +19,29 @@ const RecentExpenses = () => {
         const fetchExpenses = async () => {
 
             setIsFetching(true);
-            const expenses: any = await getExpenses();
-            setIsFetching(false);
 
-            setExpenses(expenses);
+            try {
+                const expenses: any = await getExpenses();
+                setExpenses(expenses);
+            } catch (error) {
+                setError('Não foi possível obter despesas!');
+            }
+
+            setIsFetching(false);
         }
 
         fetchExpenses();
     }, [])
 
+
+    if(error && !isFetching){
+        return <ErrorOverlay message={error} onConfirm={() => {setError(null)}} />
+    }
+
     if (isFetching) {
         return <LoadingOverlay />
     }
+
 
     const recentExpenses = expenses.filter((expense: Expense) => {
 
